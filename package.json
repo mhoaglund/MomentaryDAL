@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/mhoaglund/MomentaryDAL#readme",
   "dependencies": {
-    "node-mariadb": "^0.1.1"
+    "mariasql": "^0.2.6"
   }
 }
