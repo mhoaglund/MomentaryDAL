@@ -1,0 +1,22 @@
+{
+  "name": "momentarydal",
+  "version": "1.0.0",
+  "description": "Minimal data access utility for sensibly accessing s3 buckets, used as a lambda function",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhoaglund/MomentaryDAL.git"
+  },
+  "author": "maxwell.hoaglund@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mhoaglund/MomentaryDAL/issues"
+  },
+  "homepage": "https://github.com/mhoaglund/MomentaryDAL#readme",
+  "dependencies": {
+    "node-mariadb": "^0.1.1"
+  }
+}
