@@ -1,20 +1,28 @@
 'use strict';
 
-var accessType = process.env.accesstype; 
-//accessType = "maria"
+//var accessType = process.env.accesstype; 
+var accessType = "db"
 
 if(accessType === "s3"){
     const aws = require('aws-sdk');
     const s3 = new aws.S3();
 }
-if(accessType === "maria"){
-    var Client = require('mariasql');
-    var c = new Client({
-        host: process.env.dbhost,
-        port: 8066,
-        user: process.env.dbuser,
-        password: process.env.dbpw
-    })
+if(accessType === "db"){
+    var mysql      = require('mysql');
+    var connection = mysql.createConnection({
+      host     : process.env.dbhost,
+      port: 3306,
+      user     : process.env.dbuser,
+      password : process.env.dbpw,
+      database : process.env.dbname
+    });
+    connection.connect();
+    connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+        if (error) throw error;
+        console.log('The solution is: ', results[0].solution);
+      });
+      
+      connection.end();
     //c.end()
 }
 
@@ -27,14 +35,16 @@ var authenticated = false;
 exports.handler = (event, context, callback) => {
     //console.log(event);
     var reply = ""
-    var qs = event["queryStringParameters"]
-    if(!qs["auth"] === "TS"){
+    var qs = event
+    console.log(event)
+    if(!event["auth"] === "TS"){
         var reply = "Authentication Failed."
         return;
     } else {authenticated = true}
     if(authenticated){
-        parseParams(qs)
+        parseParams(event)
         if(accessType === "maria"){
+            if(!c.ready()) console.log("Unable to connect!")
             switch(operation){
                 case "getfrom":
                 if(!fromTime) reply = "Please enclose a valid timestamp."
@@ -57,7 +67,7 @@ exports.handler = (event, context, callback) => {
             switch(operation){
                 case "enumerate":
                     var params = {
-                        Bucket: qs["bucket"],
+                        Bucket: event["bucket"],
                         Delimiter: '',
                         Prefix: ''
                     }
