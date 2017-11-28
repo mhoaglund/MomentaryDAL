@@ -1,7 +1,7 @@
 'use strict';
 
-//var accessType = process.env.atype; 
-accessType = "maria"
+var accessType = process.env.accesstype; 
+//accessType = "maria"
 
 if(accessType === "s3"){
     const aws = require('aws-sdk');
@@ -12,8 +12,8 @@ if(accessType === "maria"){
     var c = new Client({
         host: process.env.dbhost,
         port: 8066,
-        user: 'foo',
-        password: 'bar'
+        user: process.env.dbuser,
+        password: process.env.dbpw
     })
     //c.end()
 }
