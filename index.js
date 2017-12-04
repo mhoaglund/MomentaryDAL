@@ -17,6 +17,7 @@ if(accessType === "db"){
       database : process.env.dbname
     });
     connection.connect();
+
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) throw error;
         console.log('The solution is: ', results[0].solution);
@@ -46,7 +47,18 @@ exports.handler = (event, context, callback) => {
         if(accessType === "maria"){
             if(!c.ready()) console.log("Unable to connect!")
             switch(operation){
-                case "getfrom":
+            case "insert":
+                var record = {
+                    id: 0
+                    //TODO parse post body
+                };
+            
+                var query = connection.query('INSERT INTO ch_orders SET ?', record,
+                    function(err, result) {
+                        if(!err) console.log(result)
+                        else console.log(err)
+                });
+            case "getfrom":
                 if(!fromTime) reply = "Please enclose a valid timestamp."
                 else{
                     
