@@ -10,21 +10,27 @@ if(accessType === "s3"){
 if(accessType === "db"){
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
-      host     : process.env.dbhost,
-      port: 3306,
-      user     : process.env.dbuser,
-      password : process.env.dbpw,
-      database : process.env.dbname
-    });
+        host     : process.env.dbhost,
+        port: 3306,
+        user     : process.env.dbuser,
+        password : process.env.dbpw,
+        database : process.env.dbname
+      });
     connection.connect();
 
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) throw error;
         console.log('The solution is: ', results[0].solution);
       });
+
+    var co_columns = "CREATE TABLE chorders (id VARCHAR(255), timestamp VARCHAR(255), author VARCHAR(255), idcolor VARCHAR(255), moves TEXT, rules TEXT, thesis TEXT)"
       
-      connection.end();
-    //c.end()
+    connection.query(co_columns, function (err, result) {
+        if (err) throw err;
+        console.log("Table created");
+    });   
+
+    connection.end();
 }
 
 var maxKeys = 1000;
@@ -52,8 +58,10 @@ exports.handler = (event, context, callback) => {
                     id: 0
                     //TODO parse post body
                 };
-            
-                var query = connection.query('INSERT INTO ch_orders SET ?', record,
+
+                //like so
+                             
+                var query = connection.query('INSERT INTO chorders SET ?', record,
                     function(err, result) {
                         if(!err) console.log(result)
                         else console.log(err)
